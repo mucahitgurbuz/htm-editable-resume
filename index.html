@@ -1,0 +1,1705 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Editable CV Blocks with HTM (Hyperscript Tagged Markup)</title>
+</head>
+
+<style type="text/css">
+    @page {
+        margin: 10px;
+    }
+
+    @media print {
+        div.module {
+            page-break-inside: avoid;
+        }
+    }
+
+    body {
+        margin: 10px;
+        font-family: DejaVu Sans, sans-serif;
+    }
+
+    div.cv-container {
+        margin: 0 auto 10px auto;
+        width: 1000px;
+        background: white;
+    }
+
+    div.header:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+
+    div.header {
+        border-bottom: 1px solid #cccccc;
+    }
+
+    div.rov:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+
+    div.header-column-left {
+        float: left;
+        width: 75%;
+    }
+
+    div.header-column-right {
+        float: left;
+        width: 25%;
+    }
+
+    div.content-column-left {
+        float: left;
+        width: 30%;
+        border-right: 1px solid #cccccc;
+        margin-top: 20px;
+        padding-right: 24px;
+    }
+
+    div.content-column-right {
+        float: left;
+        width: 63%;
+        padding: 0 15px 0 15px;
+    }
+
+    div.footer-column {
+        float: left;
+        width: 100%;
+        text-align: center;
+        color: gray;
+        margin-top: 30px;
+    }
+
+    div.contact-info {
+        font-weight: 200;
+        color: gray;
+        padding-bottom: 10px;
+        line-height: 20px;
+    }
+
+    div.module {
+        border-top: 1px solid #cccccc;
+        padding-top: 20px;
+        padding-bottom: 15px;
+        page-break-inside: avoid;
+    }
+
+    div.module-header {
+        margin-bottom: 12px;
+    }
+
+    div.module-header:after {
+        content: "";
+        display: block;
+        border-bottom: 2px solid black;
+        width: 3em;
+    }
+
+    ul.sp-list {
+        padding-left: 1em;
+        font-weight: 200;
+        line-height: 30px;
+    }
+
+    div.module-subheader {
+        border-bottom: 1px solid #e2e2e2;
+        padding-top: 10px;
+        padding-bottom: 12px;
+    }
+
+    img.module-image {
+        width: 40px;
+        margin: 0 30px 0 0;
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    div.module-content {
+        display: inline-block;
+        line-height: 15px;
+        vertical-align: middle;
+        width: 60%;
+    }
+
+    span.module-content-title {
+        color: #616161;
+        display: block;
+        font-size: 16px;
+        font-weight: normal;
+        margin: 0 0 8px;
+    }
+
+    strong.module-content-content {
+        color: #333333;
+        font-size: 14px;
+        font-weight: 400;
+        text-transform: capitalize;
+    }
+
+    div.module-text {
+        color: gray;
+        text-align: justify;
+        text-justify: inter-word;
+    }
+
+    div.exp-row {
+        margin-top: 30px;
+    }
+
+    div.exp-row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+
+    div.year-range {
+        width: 25%;
+        float: left;
+        font-size: 18px;
+    }
+
+    div.exp-title {
+        width: 75%;
+        float: left;
+    }
+
+    div.exp-title-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: #383636;
+    }
+
+    div.exp-title-place {
+        padding-top: 7px;
+        font-size: 18px;
+    }
+
+    div.exp-title-description {
+        padding-top: 7px;
+    }
+
+    div.competency-bar {
+        margin: 0.5em 0px 0.75em;
+        width: 100%;
+        background-color: white;
+        border: 1px solid #cccccc;
+        border-radius: 1px;
+        height: 10px;
+    }
+
+    div.competency-level {
+        background-color: #cccccc;
+        border-radius: 1px;
+        height: 100%;
+    }
+
+    img.profile-image {
+        width: 130px;
+        padding-bottom: 15px;
+        float: right;
+    }
+
+    .validation-error {
+        border: solid;
+        border-color: red !important;
+    }
+
+    .disable {
+        pointer-events: none;
+        cursor: not-allowed;
+    }
+
+    .progress-bar {
+        width: 100%;
+        margin: 0.5em 0px 0.75em;
+        height: 12px;
+    }
+
+    #name-surname {
+        font-weight: 200;
+        font-size: 1.2cm;
+        margin-bottom: 0.25cm;
+        margin-top: 0.25cm;
+    }
+
+    #name-surname input {
+        font-weight: 200;
+        font-size: 1.2cm;
+        padding: 0;
+        border: 0;
+        font-family: DejaVu Sans, sans-serif;
+    }
+
+    #job-title {
+        font-weight: 200;
+        font-size: 0.5cm;
+        margin-bottom: 0.5cm;
+        margin-top: 0.25cm;
+        color: gray;
+    }
+
+    #jobTitle input {
+        font-weight: 200;
+        font-size: 0.5cm;
+        padding: 0;
+        border: 0;
+        font-family: DejaVu Sans, sans-serif;
+        color: gray;
+    }
+
+    div.contact-info input {
+        font-family: DejaVu Sans, sans-serif;
+        font-weight: 200;
+        color: gray;
+        padding: 0;
+        border: 0;
+        font-size: 16px;
+    }
+
+    div.module-text textarea {
+        width: 100%;
+        height: 90px;
+        color: gray;
+        text-align: justify;
+        font-family: DejaVu Sans, sans-serif;
+        font-size: 16px;
+    }
+
+    strong.module-content-content input {
+        color: #333333;
+        font-size: 14px;
+        font-weight: 400;
+        text-transform: capitalize;
+        font-family: DejaVu Sans, sans-serif;
+        padding: 0;
+        border: 0;
+    }
+
+    strong.module-content-content select {
+        color: #333333;
+        font-size: 14px;
+        font-weight: 400;
+        text-transform: capitalize;
+        font-family: DejaVu Sans, sans-serif;
+        padding: 0;
+        border: 1px solid #c7c7c7;
+        background-color: white;
+        margin-left: -3px;
+    }
+
+    .module-text input {
+        font-size: 16px;
+        color: gray;
+        font-family: DejaVu Sans, sans-serif;
+    }
+
+    .button {
+        background-color: #4CAF50;
+        /* Green */
+        border: none;
+        color: white;
+        padding: 0px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        margin: 0px 8px;
+        -webkit-transition-duration: 0.4s;
+        /* Safari */
+        transition-duration: 0.4s;
+        cursor: pointer;
+    }
+
+    .buttongreen {
+        background-color: #4CAF50;
+        color: white;
+        border: 2px solid #4CAF50;
+        border-radius: 50%;
+        width: 25px;
+        height: 25px;
+    }
+
+    .buttongreen:hover {
+        background-color: white;
+        color: #4CAF50;
+        border: 2px solid #4CAF50;
+        border-radius: 50%;
+    }
+
+    .buttonred {
+        background-color: #f44336;
+        color: white;
+        border: 1px solid #f44336;
+        border-radius: 50%;
+    }
+
+    .buttonred:hover {
+        background-color: white;
+        color: #f44336;
+        border: 1px solid #f44336;
+        border-radius: 50%;
+    }
+
+    .buttonblue {
+        background-color: #008CBA;
+        color: white;
+        border: 2px solid #008CBA;
+        border-radius: 5px;
+        width: auto;
+        height: auto;
+        margin: 4px 8px;
+        padding: 2px;
+    }
+
+    .buttonblue:hover {
+        background-color: white;
+        color: #008CBA;
+        border: 2px solid #008CBA;
+        border-radius: 5px;
+        width: auto;
+    }
+
+
+    .dropdown-menu {
+        width: 215px;
+        height: 25px;
+    }
+
+    .dropdown-menu .menu {
+        display: flex;
+        flex-direction: column;
+        will-change: transform;
+        transform-origin: center top;
+        transform: scale(0);
+        transition: transform 0.6s cubic-bezier(0.075, 0.82, 0.165, 1);
+        cursor: default;
+    }
+
+    .menu .menu-item {
+        height: 30px;
+        width: calc(100% - 40px);
+        padding: 0 20px 0 20px;
+        background-color: #f9f9f9;
+        line-height: 30px;
+        border-bottom: 1px inset gray;
+    }
+
+    .menu-item:hover {
+        filter: brightness(1.2);
+    }
+
+    .dropdown-menu:hover .menu {
+        will-change: transform;
+        transition: transform 0.6s cubic-bezier(0.075, 0.82, 0.165, 1);
+        transform-origin: center top;
+        transform: scale(1);
+    }
+
+    .dropdown-button {
+        height: calc(100% - 4px);
+        display: flex;
+        align-items: center;
+        width: calc(100% - 44px);
+        padding: 0 20px 0 20px;
+        background-color: #4CAF50;
+        border-radius: 3px;
+        cursor: default;
+        color: white;
+    }
+
+    .dropdown-button:hover {
+        filter: brightness(1.2);
+    }
+
+    .year-range input {
+        width: 42px;
+    }
+
+    .exp-title-title input {
+        font-size: 18px;
+        font-weight: 700;
+        color: #383636;
+    }
+
+    .buttonsubmit {
+        margin: 0px 4px 0px 0px;
+        padding: 4px;
+    }
+</style>
+
+<script type="module">
+    // import HTM
+    import { html, Component, render } from 'https://unpkg.com/htm/preact/standalone.mjs';
+
+    class App extends Component {
+        constructor (props) {
+            super(props);
+            this.onSubmit = this.onSubmit.bind(this);
+            this.toggleIsEditable = this.toggleIsEditable.bind(this);
+            this.toggleIsEditableBlock = this.toggleIsEditableBlock.bind(this);
+            this.toggleAddNew = this.toggleAddNew.bind(this);
+            this.updateTextInput = this.updateTextInput.bind(this);
+            this.updateTextInputBlock = this.updateTextInputBlock.bind(this);
+            this.addTextInputBlock = this.addTextInputBlock.bind(this);
+            this.updateDropdownSelect = this.updateDropdownSelect.bind(this);
+            this.onBlurSave = this.onBlurSave.bind(this);
+            this.removeElement = this.removeElement.bind(this);
+            this.removeElementBlock = this.removeElementBlock.bind(this);
+            this.toggleIsDropdownVisible = this.toggleIsDropdownVisible.bind(this);
+            this.addToValuesList = this.addToValuesList.bind(this);
+        }
+
+        componentDidMount(){
+            // Initial values can be populate in here using setState
+            this.setState({
+                cv:{
+                    nameSurname: 'Mucahit Gurbuz',
+                    jobTitle: 'Civil Engineer',
+                    profilePictureURL: 'https://previews.123rf.com/images/fordzolo/fordzolo1506/fordzolo150600296/41026708-example-white-stamp-text-on-red-backgroud.jpg',
+                    contactEmail: 'contact@mucahit.me',
+                    contactTelephone: '05352017608',
+                    contactWebsite: 'mucahit.me',
+                    contactAddress: 'Ankara, Turkey',
+                    interestAreas: ['Software', 'Ground Improvement', 'Pavement'],
+                    birthDate: '27.04.1993',
+                    age: '22-24',
+                    educationLevel: 'Doctorate',
+                    experience: '3-5 years',
+                    currentSalary: '5000-7000 ₺',
+                    expectedSalary: '5000-7000 ₺',
+                    militaryStatus: 'Postponed',
+                    postponedDate: '02.08.2019',
+                    smoke: 'Social Smoker',
+                    drivingLicence: 'Available',
+                    hobbies: 'travelling, coding, photography',
+                    aboutMe: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',
+                    coverLetter: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
+                    computerAbilities:[
+                        {
+                            title:'Javascript',
+                            percentage: 85,
+                        },
+                        {
+                            title: 'PHP',
+                            percentage: 75,
+                        },
+                    ],
+                    abilities:[
+                        {
+                            title:'Team Work',
+                            percentage: 60,
+                        },
+                    ],
+                    languages:[
+                        {
+                            title:'English',
+                            percentage: 85,
+                        },
+                        {
+                            title: 'Russian',
+                            percentage: 50,
+                        },
+                    ],
+                    experiences:[
+                        {
+                            title:'Research Assistant',
+                            institute: 'ODTU',
+                            startingYear:'2018',
+                            finishingYear: 'Still',
+                            details: 'Developed structural finite element analysis(FEA) simulations and design optimizations. Managed file translations and drawings updates. Participated in product design on Honda projects. Developed solutions for FEA problems using variety of software applications. Organized structural FEA procedures for Ford flex plate group. Technical expert in stamping, mechanical, CAD and FEA issues. Developed new technologies in order to produce better, safer and less expensive products. Technical counselor on highly technical issues for the plants.'
+                        },
+                        {
+                            title: 'Proje Asistani',
+                            institute: 'DC-ECHO',
+                            startingYear: '2016',
+                            finishingYear: '2017',
+                            details: 'Avrupa birligi destekli TSUMAPS-NEAM projesinde web gelistirme ve tanitim isleri ile ilgilendim.'
+                        },
+                    ],
+                    educations: [
+                        {
+                            title: 'Bachelor',
+                            institute: '2.75/4.00',
+                            startingYear: '2010',
+                            finishingYear: '2016',
+                            details: 'It was nice..'
+                        },
+                        {
+                            title: 'Masters Degree',
+                            institute: '3.71',
+                            startingYear: '2016',
+                            finishingYear: '2019',
+                            details: 'Geotechnics'
+                        },
+                    ],
+                    successes: [
+                        {
+                            title: 'Yuksek Seref Ogrencisi',
+                            startingYear: '2015',
+                            details: 'ODTU Insaat Muhendisligi 2014-2015 Bahar Donemi'
+                        },
+                    ],
+                    certificates: [
+                        {
+                            title: 'Yonetmenlik',
+                            startingYear: '2016',
+                            details: 'Sinematek Film Yapim ve Yonetmenlik Sertifikasi'
+                        },
+                    ],
+                    seminars: [
+                        {
+                            title: 'ZM2015',
+                            startingYear: '2015',
+                            details: 'Zemin mekanigi ve geoteknik muhendisligi semineri'
+                        },
+                    ],
+                    exams: [
+                        {
+                            title: 'IELTS',
+                            startingYear: '2017',
+                            details: '8.0'
+                        },
+                    ],
+                    references: [
+                        {
+                            title: 'Onur Pekcan',
+                            email:'opekcan@metu.edu.tr',
+                            telephone:'+905352017608'
+                        },
+                    ],
+                },
+                cvOptions: {
+                    interestAreasList: ['Software', 'Ground Improvement', 'Dam', 'Pavement', 'Steel Structure', 'Materials'],
+                    ageList: ['18-22', '22-24', '24-26', '26-28'],
+                    educationLevelList: ['Bachelor', 'Masters Degree', 'Doctorate'],
+                    experienceList: ['Yeni Mezun', '1-2 yil', '2-3 yil', '3-5 yil', '5-10 yil'],
+                    currentSalaryList: ['1000-2000 ₺', '2000-5000 ₺', '5000-7000 ₺'],
+                    expectedSalaryList: ['1000-2000 ₺', '2000-5000 ₺', '5000-7000 ₺'],
+                    militaryStatusList: ['No Relation', 'Postponed', 'Excluded'],
+                    smokeList: ['Smoking', 'Not Smoking', 'Social Smoker'],
+                    drivingLicenceList: ['Available', 'Not Available'],
+                },
+            });
+        }
+
+        onSubmit(){
+            console.log(this.state.cv);
+            // In here the updated cv data can be send to backend using ajax calls.
+        }
+
+        toggleIsEditable(name){
+            this.setState({
+                ...this.state,
+                isEditable:{
+                    ...this.state.isEditable,
+                    [name]:true
+                }
+            })
+        }
+
+        toggleIsEditableBlock(name,index) {
+            let objectToBeUpdated = [];
+            this.state.cv[name].forEach(item=>
+            {objectToBeUpdated.push(false)});
+            objectToBeUpdated[index] = this.state.isEditable&&this.state.isEditable[name]&&this.state.isEditable[name][index]?false:true;
+            this.setState({
+                ...this.state,
+                isEditable: {
+                    ...this.state.isEditable,
+                    [name]: objectToBeUpdated,
+                }
+            })
+        }
+
+        toggleAddNew(name) {
+            this.setState({
+                ...this.state,
+                addNew: {
+                    ...this.state.addNew,
+                    [name]: this.state.addNew&&this.state.addNew[name]?false:true,
+                }
+            })
+        }
+
+        updateTextInput(name,value){
+            if(name=="nameSurname"&&value.length>18){
+                this.setState(prevState => ({
+                    hasError: {...prevState.hasError, nameSurname:true}
+                }))
+            }
+            this.setState({
+                cv:{
+                    ...this.state.cv,
+                    [name]: value,
+                }
+            })
+        }
+
+        updateTextInputBlock(name, index, subblock, value) {
+            let block = this.state.cv[name];
+            block[index][subblock] = value;
+            this.setState({
+                cv: {
+                    ...this.state.cv,
+                    [name]: block,
+                }
+            })
+        }
+
+        addTextInputBlock(name,obj) {
+            let objectToBeUpdated = this.state.cv[name];
+            if(!(obj.startingYear==''&&obj.finishingYear==''&&obj.title==''&&obj.institute==''&&obj.details==''&&obj.email==''&&obj.telephone=='')){
+                objectToBeUpdated.push(obj);
+                this.setState({
+                    cv: {
+                        ...this.state.cv,
+                        [name]: objectToBeUpdated,
+                    }
+                })
+            }
+        }
+
+        updateDropdownSelect(name, value) {
+            this.setState({
+                ...this.state,
+                cv:{
+                    ...this.state.cv,
+                    [name]: value,
+                },
+                isEditable: {
+                    ...this.state.isEditable,
+                    [name]: false
+                }
+            })
+        }
+
+        onBlurSave(){
+            for(var editable in this.state.isEditable){
+                this.setState({
+                    ...this.state,
+                    isEditable:{
+                        ...this.state.isEditable,
+                        [editable]:false
+                    }
+                })
+            }
+        }
+
+        onEnterPressed(){
+            for(var editable in this.state.isEditable){
+                this.setState({
+                    ...this.state,
+                    isEditable:{
+                        ...this.state.isEditable,
+                        [editable]:false
+                    }
+                })
+            }
+        }
+
+        removeElement(index,name){
+            this.setState({
+                cv:{
+                    ...this.state.cv,
+                    [name]: this.state.cv[name].filter((_, i) => i !== index)
+                }
+            });
+        }
+
+        removeElementBlock(name, index) {
+            let objectToBeUpdated = this.state.cv[name];
+            objectToBeUpdated.splice(index, 1);
+            this.setState({
+                cv: {
+                    ...this.state.cv,
+                    [name]: objectToBeUpdated
+                }
+            });
+        }
+
+        toggleIsDropdownVisible(name){
+            this.setState({
+                isDropdownVisible:{
+                    ...this.state.isDropdownVisible,
+                    [name]:false?'true':'false'
+                    }
+            })
+        }
+
+        addToValuesList(value,name){
+            this.setState({
+                ...this.state,
+                cv:{
+                    ...this.state.cv,
+                    [name]:[...this.state.cv[name], value],
+                },
+                isDropdownVisible: {
+                    ...this.state.isDropdownVisible,
+                    [name]: false
+                }
+            })
+        }
+
+
+      render({ page }, {isEditable=null,hasError=null,isDropdownVisible=null,cv=null, cvOptions=null, addNew=null}) {
+        return html`
+        <div class="app">
+            <div class="cv-container" onKeyDown=${(e)=>{if(e.keyCode==13){this.onEnterPressed();}}}>
+                <div class="header">
+                    <div class="header-column-left">
+                        <p id="name-surname">
+                            <${EditableText} placeholder="Name and Surname" name="nameSurname" isEditable=${isEditable?isEditable.nameSurname:false} hasError=${hasError?hasError.nameSurname:false} toggleIsEditableCB=${this.toggleIsEditable} value=${cv?cv.nameSurname:''} valueUpdater=${this.updateTextInput} onBlurSave=${this.onBlurSave}>
+                                <label class="${hasError&&hasError.nameSurname?'validation-error':''}">${cv ? cv.nameSurname : ''}</label>
+                            </${EditableText}>
+                        </p>
+                        <p id="job-title">
+                            <${EditableText} placeholder="Job Title" name="jobTitle" isEditable=${isEditable?isEditable.jobTitle:false} toggleIsEditableCB=${this.toggleIsEditable} value=${cv ? cv.jobTitle:''} valueUpdater=${this.updateTextInput} onBlurSave=${this.onBlurSave}>
+                                <label>${cv ? cv.jobTitle:''}</label>
+                            </${EditableText}>
+                        </p>
+                        <div id="submit-buttons">
+                            <button class="button buttonblue buttonsubmit" onClick=${this.onSubmit}>Submit</button>
+                            <button class="button buttonblue buttonsubmit">Download as PDF</button>
+                        </div>
+                    </div>
+                    <div class="header-column-right">
+                        <img class="profile-image" src="${cv ? cv.profilePictureURL:''}" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="content-column-left">
+                        <div class="contact-info">
+                            <div style="padding-bottom:5px" class="email">
+                                <img style="width:10px;padding-right:5px;" src="https://insaatcv.com/wp-content/uploads/2018/03/envelope.png" />
+                                <${EditableText} placeholder="E-mail" name="contactEmail" isEditable=${isEditable?isEditable.contactEmail:false} toggleIsEditableCB=${this.toggleIsEditable} value=${cv ? cv.contactEmail:''} valueUpdater=${this.updateTextInput} onBlurSave=${this.onBlurSave}>
+                                    <label>${cv ? cv.contactEmail:''}</label>
+                                </${EditableText}>
+                            </div>
+                            <div style="padding-bottom:5px" class="mobile">
+                                <img style="width:10px;padding-right:5px;" src="https://insaatcv.com/wp-content/uploads/2018/03/phone-call.png" />
+                                <${EditableText} placeholder="Phone" name="contactTelephone" isEditable=${isEditable?isEditable.contactTelephone:false} toggleIsEditableCB=${this.toggleIsEditable} value=${cv ? cv.contactTelephone:''} valueUpdater=${this.updateTextInput} onBlurSave=${this.onBlurSave}>
+                                    <label>${cv ? cv.contactTelephone:''}</label>
+                                </${EditableText}>
+                            </div>
+                            <div style="padding-bottom:5px" class="website">
+                                <img style="width:10px;padding-right:5px;" src="https://insaatcv.com/wp-content/uploads/2018/03/internet.png" />
+                                <${EditableText} placeholder="Website" name="contactWebsite" isEditable=${isEditable?isEditable.contactWebsite:false} toggleIsEditableCB=${this.toggleIsEditable} value=${cv ? cv.contactWebsite:''} valueUpdater=${this.updateTextInput} onBlurSave=${this.onBlurSave}>
+                                    <label>${cv ? cv.contactWebsite:''}</label>
+                                </${EditableText}>
+                            </div>
+                            <div style="padding-bottom:5px" class="address">
+                                <img style="width:10px;padding-right:5px;" src="https://insaatcv.com/wp-content/uploads/2018/03/placeholder.png" />
+                                <${EditableText} placeholder="Address" name="contactAddress" isEditable=${isEditable?isEditable.contactAddress:false} toggleIsEditableCB=${this.toggleIsEditable} value=${cv ? cv.contactAddress:''} valueUpdater=${this.updateTextInput} onBlurSave=${this.onBlurSave}>
+                                    <label>${cv ? cv.contactAddress:''}</label>
+                                </${EditableText}>
+                            </div>
+                        </div>
+                        <div class="module">
+                            <div class="module-header">
+                                <p style="font-weight:500; color:#333333; letter-spacing:2px;font-size:24px;margin-top:0px;margin-bottom:5px;">INTEREST AREAS</p>
+                            </div>
+                            <div class="module-text">
+                                <${EditableDropdownMulti} name="interestAreas" values=${cv ? cv.interestAreas:[]} valuesList=${cvOptions?cvOptions.interestAreasList:[]} addToListCB=${this.addToValuesList} removeElementCB=${this.removeElement} isDropdownVisible=${isDropdownVisible ? isDropdownVisible.interestAreas : false} toggleIsDropdownVisibleCB=${this.toggleIsDropdownVisible} />
+                            </div>
+                        </div>
+                        <div class="module">
+                            <div class="module-header">
+                                <p style="font-weight:500; color:#333333; letter-spacing:2px;font-size:24px;margin-top:0px;margin-bottom:5px;">OTHER INFORMATIONS</p>
+                            </div>
+                            <div class="module-subheader">
+                                <img class="module-image" src="https://insaatcv.com/wp-content/uploads/2018/03/calendar-1.png" />
+                                <div class="module-content">
+                                    <span class="module-content-title">Birth Date</span>
+                                    <strong class="module-content-content">
+                                        <${EditableText} placeholder="Birth Date" name="birthDate" isEditable=${isEditable ? isEditable.birthDate : false} toggleIsEditableCB=${this.toggleIsEditable} value=${cv ? cv.birthDate:''} valueUpdater=${this.updateTextInput} onBlurSave=${this.onBlurSave}>
+                                            <label>${cv ? cv.birthDate:''}</label>
+                                        </${EditableText}>
+                                    </strong>
+                                </div>
+                            </div>
+                            <div class="module-subheader">
+                                <img class="module-image" src="https://insaatcv.com/wp-content/uploads/2018/03/circular-line-with-word-age-in-the-center.png"
+                                />
+                                <div class="module-content">
+                                    <span class="module-content-title">Age</span>
+                                    <strong class="module-content-content">
+                                        <${EditableDropdownSingle} name="age" isEditable=${isEditable ? isEditable.age : false} toggleIsEditableCB=${this.toggleIsEditable} value=${cv ? cv.age:''} optionList=${cvOptions?cvOptions.ageList:[]} valueUpdater=${this.updateDropdownSelect}>
+                                            <label>${cv ? cv.age:''}</label>
+                                        </${EditableDropdownSingle}>
+                                    </strong>
+                                </div>
+                            </div>
+                            <div class="module-subheader">
+                                <img class="module-image" src="https://insaatcv.com/wp-content/uploads/2018/03/mortarboard.png" />
+                                <div class="module-content">
+                                    <span class="module-content-title">Education Level</span>
+                                    <strong class="module-content-content">
+                                        <${EditableDropdownSingle} name="educationLevel" isEditable=${isEditable ? isEditable.educationLevel : false} toggleIsEditableCB=${this.toggleIsEditable} value=${cv ? cv.educationLevel:''} optionList=${cvOptions?cvOptions.educationLevelList:[]} valueUpdater=${this.updateDropdownSelect}>
+                                            <label>${cv ? cv.educationLevel:''}</label>
+                                        </${EditableDropdownSingle}>
+                                    </strong>
+                                </div>
+                            </div>
+                            <div class="module-subheader">
+                                <img class="module-image" src="https://insaatcv.com/wp-content/uploads/2018/03/counterclockwise.png" />
+                                <div class="module-content">
+                                    <span class="module-content-title">Experience</span>
+                                    <strong class="module-content-content">
+                                        <${EditableDropdownSingle} name="experience" isEditable=${isEditable ? isEditable.experience : false} toggleIsEditableCB=${this.toggleIsEditable} value=${cv ? cv.experience:''} optionList=${cvOptions?cvOptions.experienceList:[]} valueUpdater=${this.updateDropdownSelect}>
+                                            <label>${cv ? cv.experience:''}</label>
+                                        </${EditableDropdownSingle}>
+                                    </strong>
+                                </div>
+                            </div>
+                            <div class="module-subheader">
+                                <img class="module-image" src="https://insaatcv.com/wp-content/uploads/2018/03/salary.png" />
+                                <div class="module-content">
+                                    <span class="module-content-title">Current Salary</span>
+                                    <strong class="module-content-content">
+                                        <${EditableDropdownSingle} name="currentSalary" isEditable=${isEditable ? isEditable.currentSalary : false} toggleIsEditableCB=${this.toggleIsEditable} value=${cv ? cv.currentSalary:''} optionList=${cvOptions?cvOptions.currentSalaryList:[]} valueUpdater=${this.updateDropdownSelect}>
+                                            <label>${cv ? cv.currentSalary:''}</label>
+                                        </${EditableDropdownSingle}>
+                                    </strong>
+                                </div>
+                            </div>
+                            <div class="module-subheader">
+                                <img class="module-image" src="https://insaatcv.com/wp-content/uploads/2018/03/startup.png" />
+                                <div class="module-content">
+                                    <span class="module-content-title">Expected Salary</span>
+                                    <strong class="module-content-content">
+                                        <${EditableDropdownSingle} name="expectedSalary" isEditable=${isEditable ? isEditable.expectedSalary : false} toggleIsEditableCB=${this.toggleIsEditable} value=${cv ? cv.expectedSalary:''} optionList=${cvOptions?cvOptions.expectedSalaryList:[]} valueUpdater=${this.updateDropdownSelect}>
+                                            <label>${cv ? cv.expectedSalary:''}</label>
+                                        </${EditableDropdownSingle}>
+                                    </strong>
+                                </div>
+                            </div>
+                            <div class="module-subheader">
+                                <img class="module-image" src="https://insaatcv.com/wp-content/uploads/2018/03/chevron-up.png" />
+                                <div class="module-content">
+                                    <span class="module-content-title">Military Status</span>
+                                    <strong class="module-content-content">
+                                        <${EditableDropdownSingle} name="militaryStatus" isEditable=${isEditable ? isEditable.militaryStatus : false} toggleIsEditableCB=${this.toggleIsEditable} value=${cv ? cv.militaryStatus:''} optionList=${cvOptions?cvOptions.militaryStatusList:[]} valueUpdater=${this.updateDropdownSelect}>
+                                            <label>${cv ? cv.militaryStatus:''}</label>
+                                        </${EditableDropdownSingle}>
+                                    </strong>
+                                </div>
+                            </div>
+                            <div class="module-subheader">
+                                <img class="module-image" src="https://insaatcv.com/wp-content/uploads/2018/03/calendar-with-a-clock-time-tools.png" />
+                                <div class="module-content">
+                                    <span class="module-content-title">Postponed Date</span>
+                                    <strong class="module-content-content">
+                                        <${EditableText} placeholder="Postponed Date" name="postponedDate" isEditable=${isEditable ? isEditable.postponedDate : false} toggleIsEditableCB=${this.toggleIsEditable} value=${cv ? cv.postponedDate:''} valueUpdater=${this.updateTextInput} onBlurSave=${this.onBlurSave}>
+                                            <label>${cv ? cv.postponedDate:''}</label>
+                                        </${EditableText}>
+                                    </strong>
+                                </div>
+                            </div>
+                            <div class="module-subheader">
+                                <img class="module-image" src="https://insaatcv.com/wp-content/uploads/2018/03/cigarette.png" />
+                                <div class="module-content">
+                                    <span class="module-content-title">Smoking</span>
+                                    <strong class="module-content-content">
+                                        <${EditableDropdownSingle} name="smoke" isEditable=${isEditable ? isEditable.smoke : false} toggleIsEditableCB=${this.toggleIsEditable} value=${cv ? cv.smoke:''} optionList=${cvOptions?cvOptions.smokeList:[]} valueUpdater=${this.updateDropdownSelect}>
+                                            <label>${cv ? cv.smoke:''}</label>
+                                        </${EditableDropdownSingle}>
+                                    </strong>
+                                </div>
+                            </div>
+                            <div class="module-subheader">
+                                <img class="module-image" src="https://insaatcv.com/wp-content/uploads/2018/03/driving-license.png" />
+                                <div class="module-content">
+                                    <span class="module-content-title">Driving Licence</span>
+                                    <strong class="module-content-content">
+                                        <${EditableDropdownSingle} name="drivingLicence" isEditable=${isEditable ? isEditable.drivingLicence : false} toggleIsEditableCB=${this.toggleIsEditable} value=${cv ? cv.drivingLicence:''} optionList=${cvOptions?cvOptions.drivingLicenceList:[]} valueUpdater=${this.updateDropdownSelect}>
+                                            <label>${cv ? cv.drivingLicence:''}</label>
+                                        </${EditableDropdownSingle}>
+                                    </strong>
+                                </div>
+                            </div>
+                            <div class="module-subheader">
+                                <img class="module-image" src="https://insaatcv.com/wp-content/uploads/2018/03/puzzle.png" />
+                                <div class="module-content">
+                                    <span class="module-content-title">Hobbies</span>
+                                    <strong class="module-content-content">
+                                        <${EditableTextArea} placeholder="Hobbies" name="hobbies" isEditable=${isEditable ? isEditable.hobbies : false} toggleIsEditableCB=${this.toggleIsEditable} value=${cv ? cv.hobbies:''} valueUpdater=${this.updateTextInput} onBlurSave=${this.onBlurSave}>
+                                            <label>${cv ? cv.hobbies:''}</label>
+                                        </${EditableTextArea}>
+                                    </strong>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="module">
+                            <div class="module-header">
+                                <p style="font-weight:500; color:#333333; letter-spacing:2px;font-size:21px;margin-top:0px;margin-bottom:5px;">Computer Skills</p>
+                            </div>
+                            <div class="module-text">
+                                    ${cv?cv.computerAbilities.map((ability,i)=>(
+                                        html `<${EditableProgressBlock} name="computerAbilities" index=${i} values=${ability} isEditable=${isEditable&&isEditable.computerAbilities&&isEditable.computerAbilities?isEditable.computerAbilities[i]:false} toggleIsEditableCB=${this.toggleIsEditableBlock} removeElementBlockCB=${this.removeElementBlock} valueUpdaterBlock=${this.updateTextInputBlock} />`
+                                    )):null}
+                                    <${NewEditableProgressBlock} name="computerAbilities" isActive=${addNew?addNew.computerAbilities:false} addNewBlockCB=${this.addTextInputBlock} toggleAddNewCB=${this.toggleAddNew} />
+                                    <button class="button buttongreen ${addNew&&addNew.computerAbilities?'disable':''}" onClick=${() => { this.toggleAddNew('computerAbilities') }}>+</button>
+                            </div>
+                        </div>
+                        <div class="module">
+                            <div class="module-header">
+                                <p style="font-weight:500; color:#333333; letter-spacing:2px;font-size:24px;margin-top:0px;margin-bottom:5px;">Abilities</p>
+                            </div>
+                            <div class="module-text">
+                                    ${cv?cv.abilities.map((ability,i)=>(
+                                        html `<${EditableProgressBlock} name="abilities" index=${i} values=${ability} isEditable=${isEditable&&isEditable.abilities&&isEditable.abilities?isEditable.abilities[i]:false} toggleIsEditableCB=${this.toggleIsEditableBlock} removeElementBlockCB=${this.removeElementBlock} valueUpdaterBlock=${this.updateTextInputBlock} />`
+                                    )):null}
+                                    <${NewEditableProgressBlock} name="abilities" isActive=${addNew?addNew.abilities:false} addNewBlockCB=${this.addTextInputBlock} toggleAddNewCB=${this.toggleAddNew} />
+                                    <button class="button buttongreen ${addNew&&addNew.abilities?'disable':''}" onClick=${() => { this.toggleAddNew('abilities') }}>+</button>
+                            </div>
+                        </div>
+                        <div class="module">
+                            <div class="module-header">
+                                <p style="font-weight:500; color:#333333; letter-spacing:2px;font-size:24px;margin-top:0px;margin-bottom:5px;">LANGUAGES</p>
+                            </div>
+                                <div class="module-text">
+                                    ${cv?cv.languages.map((language,i)=>(
+                                        html `<${EditableProgressBlock} name="languages" index=${i} values=${language} isEditable=${isEditable&&isEditable.languages&&isEditable.languages?isEditable.languages[i]:false} toggleIsEditableCB=${this.toggleIsEditableBlock} removeElementBlockCB=${this.removeElementBlock} valueUpdaterBlock=${this.updateTextInputBlock} />`
+                                    )):null}
+                                    <${NewEditableProgressBlock} name="languages" isActive=${addNew?addNew.languages:false} addNewBlockCB=${this.addTextInputBlock} toggleAddNewCB=${this.toggleAddNew} />
+                                    <button class="button buttongreen ${addNew&&addNew.languages?'disable':''}" onClick=${() => { this.toggleAddNew('languages') }}>+</button>
+                                </div>
+                        </div>
+                    </div>
+                    <div class="content-column-right">
+                        <div style="border-top:none;" class="module">
+                            <div class="module-header">
+                                <p style="font-weight:500; color:#333333; letter-spacing:2px;font-size:24px;margin-top:0px;margin-bottom:5px;">SUMMARY</p>
+                            </div>
+                            <div class="module-text">
+                                <${EditableTextArea} placeholder="Please describe yourself as a summary..." name="aboutMe" isEditable=${isEditable ? isEditable.aboutMe : false} toggleIsEditableCB=${this.toggleIsEditable} value=${cv ? cv.aboutMe:''} valueUpdater=${this.updateTextInput} onBlurSave=${this.onBlurSave}>
+                                    <label>${cv ? cv.aboutMe:''}</label>
+                                </${EditableTextArea}>
+                            </div>
+                        </div>
+                        <div class="module">
+                            <div class="module-header">
+                                <p style="font-weight:500; color:#333333; letter-spacing:2px;font-size:24px;margin-top:0px;margin-bottom:5px;">COVER LETTER</p>
+                            </div>
+                            <div class="module-text">
+                                <${EditableTextArea} placeholder="Write a cover letter for the recruiters..." name="coverLetter" isEditable=${isEditable ? isEditable.coverLetter : false} toggleIsEditableCB=${this.toggleIsEditable} value=${cv ? cv.coverLetter:''} valueUpdater=${this.updateTextInput} onBlurSave=${this.onBlurSave}>
+                                    <label>${cv ? cv.coverLetter:''}</label>
+                                </${EditableTextArea}>
+                            </div>
+                        </div>
+                            <div class="module">
+                                <div class="module-header">
+                                    <p style="font-weight:500; color:#333333; letter-spacing:2px;font-size:24px;margin-top:0px;margin-bottom:5px;">EXPERIENCES</p>
+                                </div>
+                                <div class="module-text">
+                                    ${cv?cv.experiences.map((experience,i)=>(
+                                        html `<${EditableBlock} blockType="experience" index=${i} name="experiences" values=${experience} isEditable=${isEditable&&isEditable.experiences&&isEditable.experiences?isEditable.experiences[i]:false} toggleIsEditableCB=${this.toggleIsEditableBlock} removeElementBlockCB=${this.removeElementBlock} valueUpdaterBlock=${this.updateTextInputBlock} />`
+                                    )):null}
+                                    <${NewEditableBlock} blockType="experience" name="experiences" isActive=${addNew?addNew.experiences:false} addNewBlockCB=${this.addTextInputBlock} toggleAddNewCB=${this.toggleAddNew} />
+                                    <button class="button buttongreen ${addNew&&addNew.experiences?'disable':''}" onClick=${() => { this.toggleAddNew('experiences') }}>+</button>
+                                </div>
+                            </div>
+                            <div class="module">
+                                <div class="module-header">
+                                    <p style="font-weight:500; color:#333333; letter-spacing:2px;font-size:24px;margin-top:0px;margin-bottom:5px;">EDUCATION</p>
+                                </div>
+                                <div class="module-text">
+                                    ${cv?cv.educations.map((experience,i)=>(
+                                        html `<${EditableBlock} blockType="education" index=${i} name="educations" values=${experience} isEditable=${isEditable&&isEditable.educations&&isEditable.educations?isEditable.educations[i]:false} toggleIsEditableCB=${this.toggleIsEditableBlock} removeElementBlockCB=${this.removeElementBlock} valueUpdaterBlock=${this.updateTextInputBlock} />`
+                                    )):null}
+                                    <${NewEditableBlock} blockType="education" name="educations" isActive=${addNew?addNew.educations:false} addNewBlockCB=${this.addTextInputBlock} toggleAddNewCB=${this.toggleAddNew} />
+                                    <button class="button buttongreen ${addNew&&addNew.educations?'disable':''}" onClick=${() => { this.toggleAddNew('educations') }}>+</button>
+                                </div>
+                            </div>
+                            <div class="module">
+                                <div class="module-header">
+                                    <p style="font-weight:500; color:#333333; letter-spacing:2px;font-size:24px;margin-top:0px;margin-bottom:5px;">SUCCESSES</p>
+                                </div>
+                                <div class="module-text">
+                                    ${cv?cv.successes.map((experience,i)=>(
+                                        html `<${EditableBlock} blockType="lean" index=${i} name="successes" values=${experience} isEditable=${isEditable&&isEditable.successes?isEditable.successes[i]:false} toggleIsEditableCB=${this.toggleIsEditableBlock} removeElementBlockCB=${this.removeElementBlock} valueUpdaterBlock=${this.updateTextInputBlock} />`
+                                    )):null}
+                                    <${NewEditableBlock} blockType="lean" name="successes" isActive=${addNew?addNew.successes:false} addNewBlockCB=${this.addTextInputBlock} toggleAddNewCB=${this.toggleAddNew} />
+                                    <button class="button buttongreen ${addNew&&addNew.successes?'disable':''}" onClick=${() => { this.toggleAddNew('successes') }}>+</button>
+                                </div>
+                            </div>
+                            <div class="module">
+                                <div class="module-header">
+                                    <p style="font-weight:500; color:#333333; letter-spacing:2px;font-size:24px;margin-top:0px;margin-bottom:5px;">CERTIFICATES</p>
+                                </div>
+                                <div class="module-text">
+                                    ${cv?cv.certificates.map((experience,i)=>(
+                                        html `<${EditableBlock} blockType="lean" index=${i} name="certificates" values=${experience} isEditable=${isEditable&&isEditable.certificates?isEditable.certificates[i]:false} toggleIsEditableCB=${this.toggleIsEditableBlock} removeElementBlockCB=${this.removeElementBlock} valueUpdaterBlock=${this.updateTextInputBlock} />`
+                                    )):null}
+                                    <${NewEditableBlock} blockType="lean" name="certificates" isActive=${addNew?addNew.certificates:false} addNewBlockCB=${this.addTextInputBlock} toggleAddNewCB=${this.toggleAddNew} />
+                                    <button class="button buttongreen ${addNew&&addNew.certificates?'disable':''}" onClick=${() => { this.toggleAddNew('certificates') }}>+</button>
+                                </div>
+                            </div>
+                            <div class="module">
+                                <div class="module-header">
+                                    <p style="font-weight:500; color:#333333; letter-spacing:2px;font-size:24px;margin-top:0px;margin-bottom:5px;">SEMINARS</p>
+                                </div>
+                                <div class="module-text">
+                                    ${cv?cv.seminars.map((experience,i)=>(
+                                        html `<${EditableBlock} blockType="lean" index=${i} name="seminars" values=${experience} isEditable=${isEditable&&isEditable.seminars?isEditable.seminars[i]:false} toggleIsEditableCB=${this.toggleIsEditableBlock} removeElementBlockCB=${this.removeElementBlock} valueUpdaterBlock=${this.updateTextInputBlock} />`
+                                    )):null}
+                                    <${NewEditableBlock} blockType="lean" name="seminars" isActive=${addNew?addNew.seminars:false} addNewBlockCB=${this.addTextInputBlock} toggleAddNewCB=${this.toggleAddNew} />
+                                    <button class="button buttongreen ${addNew&&addNew.seminars?'disable':''}" onClick=${() => { this.toggleAddNew('seminars') }}>+</button>
+                                </div>
+                            </div>
+                            <div class="module">
+                                <div class="module-header">
+                                    <p style="font-weight:500; color:#333333; letter-spacing:2px;font-size:24px;margin-top:0px;margin-bottom:5px;">EXAMS</p>
+                                </div>
+                                <div class="module-text">
+                                    ${cv?cv.exams.map((experience,i)=>(
+                                        html `<${EditableBlock} blockType="exam" index=${i} name="exams" values=${experience} isEditable=${isEditable&&isEditable.exams?isEditable.exams[i]:false} toggleIsEditableCB=${this.toggleIsEditableBlock} removeElementBlockCB=${this.removeElementBlock} valueUpdaterBlock=${this.updateTextInputBlock} />`
+                                    )):null}
+                                    <${NewEditableBlock} blockType="exam" name="exams" isActive=${addNew?addNew.exams:false} addNewBlockCB=${this.addTextInputBlock} toggleAddNewCB=${this.toggleAddNew} />
+                                    <button class="button buttongreen ${addNew&&addNew.exams?'disable':''}" onClick=${() => { this.toggleAddNew('exams') }}>+</button>
+                                </div>
+                            </div>
+                            <div class="module">
+                                <div class="module-header">
+                                    <p style="font-weight:500; color:#333333; letter-spacing:2px;font-size:24px;margin-top:0px;margin-bottom:5px;">REFERENCES</p>
+                                </div>
+                                <div class="module-text">
+                                    ${cv?cv.references.map((experience,i)=>(
+                                        html `<${EditableBlock} blockType="reference" index=${i} name="references" values=${experience} isEditable=${isEditable&&isEditable.references?isEditable.references[i]:false} toggleIsEditableCB=${this.toggleIsEditableBlock} removeElementBlockCB=${this.removeElementBlock} valueUpdaterBlock=${this.updateTextInputBlock} />`
+                                    )):null}
+                                    <${NewEditableBlock} blockType="reference" name="references" isActive=${addNew?addNew.references:false} addNewBlockCB=${this.addTextInputBlock} toggleAddNewCB=${this.toggleAddNew} />
+                                    <button class="button buttongreen ${addNew&&addNew.references?'disable':''}" onClick=${() => { this.toggleAddNew('references') }}>+</button>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="footer-column">
+                        <p>This editable resume blocks created by <a href="https://github.com/mucahitgurbuz">Mucahit Gurbuz</a>.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        `;
+      }
+    }
+
+    class EditableText extends Component {
+        constructor(props){
+            super(props);
+            this.toggleIsEditable=this.toggleIsEditable.bind(this);
+        }
+        componentDidUpdate(){
+            if(this.props.isEditable){
+                this.textInput && this.textInput.focus();
+            }
+        }
+        toggleIsEditable(name){
+            this.props.toggleIsEditableCB(name);
+        }
+        render(props,{}){
+            if(props.isEditable){
+                return html `<input placeholder="${props.placeholder}" ref=${(input)=>{this.textInput=input}} type="text" value=${props.value} onInput=${(e)=>{props.valueUpdater(props.name,e.target.value)}} onBlur=${()=>{props.onBlurSave()}} />`
+            }else{
+                return html `<span onDblClick=${()=> {this.toggleIsEditable(props.name)}}>${props.children}</span>`
+            }
+        }
+    }
+
+    class EditableTextArea extends Component {
+        constructor(props){
+            super(props);
+            this.toggleIsEditable=this.toggleIsEditable.bind(this);
+        }
+        componentDidUpdate(){
+            if(this.props.isEditable){
+                this.textInput && this.textInput.focus();
+            }
+        }
+        toggleIsEditable(name){
+            this.props.toggleIsEditableCB(name);
+        }
+        render(props,{}){
+            if(props.isEditable){
+                return html `<textarea placeholder="${props.placeholder}" ref=${(input)=>{this.textInput=input}} type="text" value=${props.value} onInput=${(e)=>{props.valueUpdater(props.name,e.target.value)}} onBlur=${()=>{props.onBlurSave()}} />`
+            }else{
+                return html `<span onDblClick=${()=> {this.toggleIsEditable(props.name)}}>${props.children}</span>`
+            }
+        }
+    }
+
+    class EditableDropdownMulti extends Component {
+        constructor(props){
+            super(props);
+            this.removeElement = this.removeElement.bind(this);
+            this.toggleIsDropdownVisible = this.toggleIsDropdownVisible.bind(this);
+            this.addToList = this.addToList.bind(this);
+        }
+        removeElement(index){
+            this.props.removeElementCB(index,this.props.name);
+        }
+        toggleIsDropdownVisible(){
+            this.props.toggleIsDropdownVisibleCB(this.props.name);
+        }
+        addToList(element){
+            this.props.addToListCB(element.srcElement.attributes.value.value,this.props.name);
+        }
+
+        render(props,{}){
+            if(props.isDropdownVisible){
+                return html`<div><ul class="sp-list">${props.values.map((value, i) => (html`<li>${value} <button class="button buttonred" onClick=${() => { this.removeElement(i) }}>-</button></li>`))}</ul>
+                    <div class="dropdown-menu">
+                        <div class="toggle dropdown-button">Please select...</div>
+                        <div class="menu">
+                            ${props.valuesList.filter(function (e) { return this.indexOf(e) < 0; }, props.values).map((value, i) => (html`<span onClick=${(e)=>{this.addToList(e)}} value="${value}" class="menu-item">${value}</span>`))}
+                        </div>
+                    </div>
+                </div>`
+            }else{
+                return html`<div><ul class="sp-list">${props.values.map((value, i) => (html`<li>${value} <button class="button buttonred" onClick=${() => { this.removeElement(i) }}>-</button></li>`))}</ul><button class="button buttongreen" onClick=${() => {this.toggleIsDropdownVisible()}}>+</button></div>`
+            }
+        }
+    }
+
+    class EditableDropdownSingle extends Component {
+        constructor(props){
+            super(props);
+            this.toggleIsEditable=this.toggleIsEditable.bind(this);
+        }
+        toggleIsEditable(name){
+            this.props.toggleIsEditableCB(name);
+        }
+        render(props,{}){
+            if(props.isEditable){
+                return html `<select type="text" value=${props.value} onChange=${(e)=>{props.valueUpdater(props.name,e.target.value)}}>
+                    <option selected="true" disabled="disabled">Please select..</option>
+                    ${props.optionList.map((value, i) =>
+                    (html`<option value=${value}>${value}</option>`))}</select>`
+            }else{
+                return html `<span onDblClick=${()=> {this.toggleIsEditable(props.name)}}>${props.children}</span>`
+            }
+        }
+    }
+
+    class EditableBlock extends Component {
+        constructor(props){
+            super(props);
+            this.toggleIsEditable = this.toggleIsEditable.bind(this);
+            this.removeElementBlock = this.removeElementBlock.bind(this);
+        }
+        toggleIsEditable(name,index) {
+            this.props.toggleIsEditableCB(name,index);
+        }
+        removeElementBlock(name,index){
+            this.props.removeElementBlockCB(name,index);
+        }
+        render(props,{}){
+            if (props.isEditable && props.blockType=='experience' ) {
+                return html ` <div class="exp-row">
+                        <div class="year-range">
+                            <input value=${props.values.startingYear} onInput=${(e) => { props.valueUpdaterBlock(props.name, props.index, 'startingYear' , e.target.value) }} />
+                             -
+                            <input value=${props.values.finishingYear} onInput=${(e) => { props.valueUpdaterBlock(props.name, props.index, 'finishingYear', e.target.value) }} />
+                        </div>
+                        <div class="exp-title">
+                            <div class="exp-title-title">
+                                <input value=${props.values.title} onInput=${(e) => { props.valueUpdaterBlock(props.name, props.index, 'title', e.target.value) }} />
+                            </div>
+                            <div class="exp-title-place">
+                                <input value=${props.values.institute} onInput=${(e) => { props.valueUpdaterBlock(props.name, props.index, 'institute', e.target.value) }} />
+                            </div>
+                            <div class="exp-title-description">
+                                <textarea value=${props.values.details} onInput=${(e) => { props.valueUpdaterBlock(props.name, props.index, 'details', e.target.value) }} />
+                            </div>
+                        </div>
+                        <div>
+                            <button class="button buttonblue" onClick=${()=>{this.toggleIsEditable(props.name,props.index)}}>Tamam</button>
+                        </div>
+                    </div>
+                `
+            } else if (!props.isEditable && props.blockType == 'experience') {
+                return html `
+                    <div onDblClick=${() => { this.toggleIsEditable(props.name, props.index) }}  class="exp-row">
+                        <div class="year-range">
+                            <span>${props.values.startingYear}</span>
+                            -
+                            <span>${props.values.finishingYear}</span>
+                        </div>
+                        <div class="exp-title">
+                            <div class="exp-title-title">
+                                <span>${props.values.title}</span><button class="button buttonred" onClick=${()=>{this.removeElementBlock(props.name, props.index)}}>-</button>
+                            </div>
+                            <div class="exp-title-place">
+                                <span>${props.values.institute}</span>
+                            </div>
+                            <div class="exp-title-description">
+                                <span>${props.values.details}</span>
+                            </div>
+                        </div>
+                    </div>
+                `
+            } else if (props.isEditable && props.blockType=='lean'){
+                return html` <div class="exp-row">
+                        <div class="year-range">
+                            <input value=${props.values.startingYear} onInput=${(e) => { props.valueUpdaterBlock(props.name, props.index, 'startingYear', e.target.value) }} />
+                        </div>
+                        <div class="exp-title">
+                            <div class="exp-title-title">
+                                <input value=${props.values.title} onInput=${(e) => { props.valueUpdaterBlock(props.name, props.index, 'title', e.target.value) }} />
+                            </div>
+                            <div class="exp-title-description">
+                                <textarea value=${props.values.details} onInput=${(e) => { props.valueUpdaterBlock(props.name, props.index, 'details', e.target.value) }} />
+                            </div>
+                        </div>
+                        <div>
+                            <button class="button buttonblue" onClick=${() => { this.toggleIsEditable(props.name, props.index) }}>Tamam</button>
+                        </div>
+                    </div>
+                `
+            } else if (!props.isEditable && props.blockType=='lean'){
+                return html`
+                    <div onDblClick=${() => { this.toggleIsEditable(props.name, props.index) }}  class="exp-row">
+                        <div class="year-range">
+                            <span>${props.values.startingYear}</span>
+                        </div>
+                        <div class="exp-title">
+                            <div class="exp-title-title">
+                                <span>${props.values.title}</span><button class="button buttonred" onClick=${() => { this.removeElementBlock(props.name, props.index) }}>-</button>
+                            </div>
+                            <div class="exp-title-description">
+                                <span>${props.values.details}</span>
+                            </div>
+                        </div>
+                    </div>
+                `
+            } else if (props.isEditable && props.blockType=='education'){
+                return html` <div class="exp-row">
+                        <div class="year-range">
+                            <input value=${props.values.startingYear} onInput=${(e) => { props.valueUpdaterBlock(props.name, props.index, 'startingYear', e.target.value) }} />
+                             -
+                            <input value=${props.values.finishingYear} onInput=${(e) => { props.valueUpdaterBlock(props.name, props.index, 'finishingYear', e.target.value) }} />
+                        </div>
+                        <div class="exp-title">
+                            <div class="exp-title-title">
+                                <input value=${props.values.title} onInput=${(e) => { props.valueUpdaterBlock(props.name, props.index, 'title', e.target.value) }} />
+                            </div>
+                            <div class="exp-title-place">
+                                <span>ANO/GPA: </span><input style="width:79px" value=${props.values.institute} onInput=${(e) => { props.valueUpdaterBlock(props.name, props.index, 'institute', e.target.value) }} />
+                            </div>
+                            <div class="exp-title-description">
+                                <textarea value=${props.values.details} onInput=${(e) => { props.valueUpdaterBlock(props.name, props.index, 'details', e.target.value) }} />
+                            </div>
+                        </div>
+                        <div>
+                            <button class="button buttonblue" onClick=${() => { this.toggleIsEditable(props.name, props.index) }}>Tamam</button>
+                        </div>
+                    </div>
+                `
+            } else if (!props.isEditable && props.blockType=='education'){
+                return html`
+                    <div onDblClick=${() => { this.toggleIsEditable(props.name, props.index) }}  class="exp-row">
+                        <div class="year-range">
+                            <span>${props.values.startingYear}</span>
+                            -
+                            <span>${props.values.finishingYear}</span>
+                        </div>
+                        <div class="exp-title">
+                            <div class="exp-title-title">
+                                <span>${props.values.title}</span><button class="button buttonred" onClick=${() => { this.removeElementBlock(props.name, props.index) }}>-</button>
+                            </div>
+                            <div class="exp-title-place">
+                                <span>ANO/GPA: </span><span>${props.values.institute}</span>
+                            </div>
+                            <div class="exp-title-description">
+                                <span>${props.values.details}</span>
+                            </div>
+                        </div>
+                    </div>
+                `
+            } else if (props.isEditable && props.blockType=='exam'){
+                return html` <div class="exp-row">
+                        <div class="year-range">
+                            <input value=${props.values.startingYear} onInput=${(e) => { props.valueUpdaterBlock(props.name, props.index, 'startingYear', e.target.value) }} />
+                        </div>
+                        <div class="exp-title">
+                            <div class="exp-title-title">
+                                <input value=${props.values.title} onInput=${(e) => { props.valueUpdaterBlock(props.name, props.index, 'title', e.target.value) }} />
+                            </div>
+                            <div class="exp-title-description">
+                                <img style="width:20px;padding-right:5px;" src="https://insaatcv.com/wp-content/uploads/2018/07/exam.png" /><input value=${props.values.details} onInput=${(e) => { props.valueUpdaterBlock(props.name, props.index, 'details', e.target.value) }} />
+                            </div>
+                        </div>
+                        <div>
+                            <button class="button buttonblue" onClick=${() => { this.toggleIsEditable(props.name, props.index) }}>Tamam</button>
+                        </div>
+                    </div>
+                `
+            } else if (!props.isEditable && props.blockType=='exam'){
+                return html`
+                    <div onDblClick=${() => { this.toggleIsEditable(props.name, props.index) }}  class="exp-row">
+                        <div class="year-range">
+                            <span>${props.values.startingYear}</span>
+                        </div>
+                        <div class="exp-title">
+                            <div class="exp-title-title">
+                                <span>${props.values.title}</span><button class="button buttonred" onClick=${() => { this.removeElementBlock(props.name, props.index) }}>-</button>
+                            </div>
+                            <div class="exp-title-description">
+                                <img style="width:20px;padding-right:5px;" src="https://insaatcv.com/wp-content/uploads/2018/07/exam.png" /><span style="font-size:20px">${props.values.details}</span>
+                            </div>
+                        </div>
+                    </div>
+                `
+            } else if (props.isEditable && props.blockType == 'reference') {
+                return html` <div class="exp-row">
+                        <div class="year-range">
+                            <span>-</span>
+                        </div>
+                        <div class="exp-title">
+                            <div class="exp-title-title">
+                                <input value=${props.values.title} onInput=${(e) => { props.valueUpdaterBlock(props.name, props.index, 'title', e.target.value) }} />
+                            </div>
+                            <div class="exp-title-description">
+                                <div style="padding-bottom:5px" class="email">
+                                    <img style="width:10px;padding-right:5px;" src="https://insaatcv.com/wp-content/uploads/2018/03/envelope.png" />
+                                    <input value=${props.values.email} onInput=${(e) => { props.valueUpdaterBlock(props.name, props.index, 'email', e.target.value) }} />
+                                </div>
+                                <div style="padding-bottom:5px" class="mobile">
+                                    <img style="width:10px;padding-right:5px;" src="https://insaatcv.com/wp-content/uploads/2018/03/phone-call.png" />
+                                    <input value=${props.values.telephone} onInput=${(e) => { props.valueUpdaterBlock(props.name, props.index, 'telephone', e.target.value) }} />
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <button class="button buttonblue" onClick=${() => { this.toggleIsEditable(props.name, props.index) }}>Tamam</button>
+                        </div>
+                    </div>
+                `
+            } else if (!props.isEditable && props.blockType == 'reference') {
+                return html`
+                    <div onDblClick=${() => { this.toggleIsEditable(props.name, props.index) }}  class="exp-row">
+                        <div class="year-range">
+                            <span>-</span>
+                        </div>
+                        <div class="exp-title">
+                            <div class="exp-title-title">
+                                <span>${props.values.title}</span><button class="button buttonred" onClick=${() => { this.removeElementBlock(props.name, props.index) }}>-</button>
+                            </div>
+                            <div class="exp-title-description">
+                                 <div style="padding-bottom:5px" class="email">
+                                    <img style="width:10px;padding-right:5px;" src="https://insaatcv.com/wp-content/uploads/2018/03/envelope.png" />
+                                    ${props.values.email}
+                                </div>
+                                <div style="padding-bottom:5px" class="mobile">
+                                    <img style="width:10px;padding-right:5px;" src="https://insaatcv.com/wp-content/uploads/2018/03/phone-call.png" />
+                                    ${props.values.telephone}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            }
+        }
+    }
+
+    class NewEditableBlock extends Component{
+        constructor(props) {
+            super(props);
+            this.toggleAddNew = this.toggleAddNew.bind(this);
+        }
+
+        componentDidMount(){
+            this.setState({
+                startingYear:'',
+                finishingYear:'',
+                title:'',
+                institute:'',
+                details:'',
+                telephone:'',
+                email:''
+            })
+        }
+
+        toggleAddNew(name) {
+            this.props.addNewBlockCB(name,this.state);
+            this.props.toggleAddNewCB(name);
+            this.setState({
+                startingYear:'',
+                finishingYear:'',
+                title:'',
+                institute:'',
+                details:'',
+                telephone: '',
+                email: ''
+            })
+        }
+
+        handleStartChange(value){
+            this.setState({
+                startingYear:value
+            })
+        }
+        handleFinishChange(value) {
+            this.setState({
+                finishingYear: value
+            })
+        }
+        handleTitleChange(value) {
+            this.setState({
+                title: value
+            })
+        }
+        handleKurumChange(value) {
+            this.setState({
+                institute: value
+            })
+        }
+        handleDetaylarChange(value) {
+            this.setState({
+                details: value
+            })
+        }
+        handleEmailChange(value) {
+            this.setState({
+                email: value
+            })
+        }
+        handleTelefonChange(value) {
+            this.setState({
+                telephone: value
+            })
+        }
+
+        render(props, { }) {
+            if(props.isActive && props.blockType=='experience'){
+                return html` <div class="exp-row">
+                        <div class="year-range">
+                            <input onInput=${(e) => { this.handleStartChange(e.target.value) }} />
+                                -
+                            <input onInput=${(e) => { this.handleFinishChange(e.target.value) }} />
+                        </div>
+                        <div class="exp-title">
+                            <div class="exp-title-title">
+                                <input onInput=${(e) => { this.handleTitleChange(e.target.value) }} />
+                            </div>
+                            <div class="exp-title-place">
+                                <input onInput=${(e) => { this.handleKurumChange(e.target.value) }} />
+                            </div>
+                            <div class="exp-title-description">
+                                <textarea onInput=${(e) => { this.handleDetaylarChange(e.target.value) }} />
+                            </div>
+                        </div>
+                        <div>
+                            <button class="button buttonblue" onClick=${() => { this.toggleAddNew(props.name) }}>Tamam</button>
+                        </div>
+                    </div>
+                `
+            } else if (props.isActive && props.blockType=='lean'){
+                return html` <div class="exp-row">
+                        <div class="year-range">
+                            <input onInput=${(e) => { this.handleStartChange(e.target.value) }} />
+                        </div>
+                        <div class="exp-title">
+                            <div class="exp-title-title">
+                                <input onInput=${(e) => { this.handleTitleChange(e.target.value) }} />
+                            </div>
+                            <div class="exp-title-description">
+                                <textarea onInput=${(e) => { this.handleDetaylarChange(e.target.value) }} />
+                            </div>
+                        </div>
+                        <div>
+                            <button class="button buttonblue" onClick=${() => { this.toggleAddNew(props.name) }}>Tamam</button>
+                        </div>
+                    </div>
+                `
+            } else if (props.isActive && props.blockType=='education'){
+                return html` <div class="exp-row">
+                        <div class="year-range">
+                            <input onInput=${(e) => { this.handleStartChange(e.target.value) }} />
+                                -
+                            <input onInput=${(e) => { this.handleFinishChange(e.target.value) }} />
+                        </div>
+                        <div class="exp-title">
+                            <div class="exp-title-title">
+                                <input onInput=${(e) => { this.handleTitleChange(e.target.value) }} />
+                            </div>
+                            <div class="exp-title-place">
+                                <span>ANO/GPA: </span><input style="width:79px" onInput=${(e) => { this.handleKurumChange(e.target.value) }} />
+                            </div>
+                            <div class="exp-title-description">
+                                <textarea onInput=${(e) => { this.handleDetaylarChange(e.target.value) }} />
+                            </div>
+                        </div>
+                        <div>
+                            <button class="button buttonblue" onClick=${() => { this.toggleAddNew(props.name) }}>Tamam</button>
+                        </div>
+                    </div>
+                `
+            } else if (props.isActive && props.blockType == 'exam') {
+                return html` <div class="exp-row">
+                        <div class="year-range">
+                            <input onInput=${(e) => { this.handleStartChange(e.target.value) }} />
+                        </div>
+                        <div class="exp-title">
+                            <div class="exp-title-title">
+                                <input onInput=${(e) => { this.handleTitleChange(e.target.value) }} />
+                            </div>
+                            <div class="exp-title-description">
+                                <img style="width:20px;padding-right:5px;" src="https://insaatcv.com/wp-content/uploads/2018/07/exam.png" /><input onInput=${(e) => { this.handleDetaylarChange(e.target.value) }} />
+                            </div>
+                        </div>
+                        <div>
+                            <button class="button buttonblue" onClick=${() => { this.toggleAddNew(props.name) }}>Tamam</button>
+                        </div>
+                    </div>
+                `
+            } else if (props.isActive && props.blockType == 'reference') {
+                return html` <div class="exp-row">
+                        <div class="year-range">
+                            <span>-</span>
+                        </div>
+                        <div class="exp-title">
+                            <div class="exp-title-title">
+                                <input onInput=${(e) => { this.handleTitleChange(e.target.value) }} />
+                            </div>
+                            <div class="exp-title-description">
+                                <div style="padding-bottom:5px" class="email">
+                                    <img style="width:10px;padding-right:5px;" src="https://insaatcv.com/wp-content/uploads/2018/03/envelope.png" />
+                                    <input onInput=${(e) => { this.handleEmailChange(e.target.value) }} />
+                                </div>
+                                <div style="padding-bottom:5px" class="mobile">
+                                    <img style="width:10px;padding-right:5px;" src="https://insaatcv.com/wp-content/uploads/2018/03/phone-call.png" />
+                                    <input onInput=${(e) => { this.handleTelefonChange(e.target.value) }} />
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <button class="button buttonblue" onClick=${() => { this.toggleAddNew(props.name) }}>Tamam</button>
+                        </div>
+                    </div>
+                `
+            }
+        }
+    }
+
+    class EditableProgressBlock extends Component{
+        constructor(props){
+            super(props);
+            this.selectProgress = this.selectProgress.bind(this);
+            this.toggleIsEditable = this.toggleIsEditable.bind(this);
+            this.removeElementBlock = this.removeElementBlock.bind(this);
+            this.onOK = this.onOK.bind(this);
+        }
+        componentDidMount(){
+            this.setState({
+                percentage:this.props.values.percentage
+            })
+        }
+        toggleIsEditable(name, index) {
+            this.props.toggleIsEditableCB(name, index);
+        }
+        onOK(name,index){
+            this.props.toggleIsEditableCB(name, index);
+            this.props.valueUpdaterBlock(props.name, props.index, 'percentage', this.state.percentage);
+        }
+        removeElementBlock(name, index) {
+            this.props.removeElementBlockCB(name, index);
+        }
+        selectProgress(e){
+            let x = e.pageX - this.base.offsetLeft;
+            let y = e.pageY - this.base.offsetTop;
+            let clickedValue = x * 1 / this.base.offsetWidth;
+            this.setState({
+                percentage:clickedValue*100,
+            })
+        }
+        render(props,{}){
+            if(props.isEditable){
+                return html`
+                <div>
+                    <li><input value=${props.values.title} onInput=${(e) => { props.valueUpdaterBlock(props.name, props.index, 'title', e.target.value) }} /></li>
+                    <div class="competency-bar" onmousemove=${(e) => { this.selectProgress(e) }} onClick=${(e) => { this.selectProgress(e) }}>
+                        <div class="competency-level" style="width: ${this.state.percentage}%;"></div>
+                    </div>
+                    <div>
+                        <button class="button buttonblue" onClick=${() => { this.toggleIsEditable(props.name, props.index) }}>OK</button>
+                    </div>
+                </div>`
+            }else{
+                return html`
+                <div onDblClick=${() => { this.toggleIsEditable(props.name, props.index) }}>
+                    <li>${props.values.title} <button class="button buttonred" onClick=${() => { this.removeElementBlock(props.name, props.index) }}>-</button></li>
+                    <div class="competency-bar">
+                        <div class="competency-level" style="width: ${this.state.percentage}%;"></div>
+                    </div>
+                </div>`
+            }
+        }
+    }
+
+    class NewEditableProgressBlock extends Component{
+        constructor(props){
+            super(props);
+            this.selectProgress = this.selectProgress.bind(this);
+            this.toggleAddNew = this.toggleAddNew.bind(this);
+            this.onOK = this.onOK.bind(this);
+            this.handleTitleChange = this.handleTitleChange.bind(this);
+        }
+        componentDidMount(){
+            this.setState({
+                percentage:0
+            })
+        }
+        toggleAddNew(name) {
+            this.props.addNewBlockCB(name, this.state);
+            this.props.toggleAddNewCB(name);
+            this.setState({
+                title: '',
+                percentage: '',
+            })
+        }
+        onOK(name,index){
+            this.props.toggleIsEditableCB(name, index);
+            this.props.valueUpdaterBlock(props.name, props.index, 'percentage', this.state.percentage);
+        }
+        selectProgress(e){
+            let x = e.pageX - this.base.offsetLeft;
+            let y = e.pageY - this.base.offsetTop;
+            let clickedValue = x * 1 / this.base.offsetWidth;
+            this.setState({
+                percentage:clickedValue*100,
+            })
+        }
+        handleTitleChange(value) {
+            this.setState({
+                title: value
+            })
+        }
+        render(props,{}){
+            if (props.isActive) {
+                return html`<div>
+                    <li><input onInput=${(e) => { this.handleTitleChange(e.target.value) }} /></li>
+                    <div class="competency-bar" onmousemove=${(e) => { this.selectProgress(e) }} onClick=${(e) => { this.selectProgress(e) }}>
+                        <div class="competency-level" style="width: ${this.state.percentage}%;"></div>
+                    </div>
+                    <div>
+                        <button class="button buttonblue" onClick=${() => { this.toggleAddNew(props.name) }}>Tamam</button>
+                    </div>
+                </div>
+                `
+            }
+        }
+    }
+
+    render(html`<${App} page="All" />`, document.body);
+  </script>
+
+</html>
