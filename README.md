@@ -17,14 +17,17 @@ Several type of interactions for editing have been designed.
  - *For the list items with sliders*, it is like list items however, slider is used to select a percent over %100. Just double click on the list item and click on the slider for the selecting percentage.
 
 ## Integration
-Importing HTM module;
+Importing HTM module;  
 
+    ```javascript
     <script  type="module">
     // import HTM
     import  {  html,  Component,  render  }  from  'https://unpkg.com/htm/preact/standalone.mjs';
-    ..
+    ...
+    ```
 Import existing data in `ComponentDidMount()` . An ajax call to backend might be useful to get existing data, and with `setState` function data can be stored in the state.
 
+    ```javascript
     this.setState({
 	    cv:{
 		    nameSurname:  'Mucahit Gurbuz',
@@ -39,9 +42,10 @@ Import existing data in `ComponentDidMount()` . An ajax call to backend might be
 		    ...
 		}
 	})
+    ```
+Design the form according to your requests. Just use the blocks  
 
-Design the form according to your requests. Just use the blocks;
-
+    ```javascript
     <${EditableText}
 	    placeholder="Website"
 	    name="contactWebsite"
@@ -53,13 +57,16 @@ Design the form according to your requests. Just use the blocks;
 	>
 	    <label>${cv?cv.contactWebsite:''}</label>
     </${EditableText}>
+    ```
 Just change the `contactWebsite` to another parameter.
-To submit updated data to backend use `onSubmit` function;
+To submit updated data to backend use `onSubmit` function;  
 
+    ```javascript
     onSubmit(){
 	    console.log(this.state.cv);
 	    // In here the updated cv data can be send to backend using ajax calls.
 	}
+    ```
 The data inside the state is always the updated. Therefore, it may use to send cv data to anywhere anytime.
 
 
