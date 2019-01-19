@@ -655,15 +655,9 @@
         }
 
         addTextInputBlock(name,obj) {
-            let objectToBeUpdated = this.state.cv[name];
-            if(!(obj.startingYear==''&&obj.finishingYear==''&&obj.title==''&&obj.institute==''&&obj.details==''&&obj.email==''&&obj.telephone=='')){
+            if(!(obj.title=='')){
+                const objectToBeUpdated = this.state.cv[name];
                 objectToBeUpdated.push(obj);
-                this.setState({
-                    cv: {
-                        ...this.state.cv,
-                        [name]: objectToBeUpdated,
-                    }
-                })
             }
         }
 
@@ -766,8 +760,8 @@
                             </${EditableText}>
                         </p>
                         <div id="submit-buttons">
-                            <button class="button buttonblue buttonsubmit" onClick=${this.onSubmit}>Submit</button>
-                            <button class="button buttonblue buttonsubmit">Download as PDF</button>
+                            <button class="button buttonblue buttonsubmit" onClick=${this.onSubmit} title="Submit the CV">Submit</button>
+                            <button class="button buttonblue buttonsubmit" title="Download the updated CV as PDF">Download as PDF</button>
                         </div>
                     </div>
                     <div class="header-column-right">
@@ -946,7 +940,7 @@
                                         html `<${EditableProgressBlock} name="computerAbilities" index=${i} values=${ability} isEditable=${isEditable&&isEditable.computerAbilities&&isEditable.computerAbilities?isEditable.computerAbilities[i]:false} toggleIsEditableCB=${this.toggleIsEditableBlock} removeElementBlockCB=${this.removeElementBlock} valueUpdaterBlock=${this.updateTextInputBlock} />`
                                     )):null}
                                     <${NewEditableProgressBlock} name="computerAbilities" isActive=${addNew?addNew.computerAbilities:false} addNewBlockCB=${this.addTextInputBlock} toggleAddNewCB=${this.toggleAddNew} />
-                                    <button class="button buttongreen ${addNew&&addNew.computerAbilities?'disable':''}" onClick=${() => { this.toggleAddNew('computerAbilities') }}>+</button>
+                                    <button class="button buttongreen ${addNew&&addNew.computerAbilities?'disable':''}" onClick=${() => { this.toggleAddNew('computerAbilities') }} title="Add New Computer Skill">+</button>
                             </div>
                         </div>
                         <div class="module">
@@ -958,7 +952,7 @@
                                         html `<${EditableProgressBlock} name="abilities" index=${i} values=${ability} isEditable=${isEditable&&isEditable.abilities&&isEditable.abilities?isEditable.abilities[i]:false} toggleIsEditableCB=${this.toggleIsEditableBlock} removeElementBlockCB=${this.removeElementBlock} valueUpdaterBlock=${this.updateTextInputBlock} />`
                                     )):null}
                                     <${NewEditableProgressBlock} name="abilities" isActive=${addNew?addNew.abilities:false} addNewBlockCB=${this.addTextInputBlock} toggleAddNewCB=${this.toggleAddNew} />
-                                    <button class="button buttongreen ${addNew&&addNew.abilities?'disable':''}" onClick=${() => { this.toggleAddNew('abilities') }}>+</button>
+                                    <button class="button buttongreen ${addNew&&addNew.abilities?'disable':''}" onClick=${() => { this.toggleAddNew('abilities') }} title="Add New Ability">+</button>
                             </div>
                         </div>
                         <div class="module">
@@ -970,7 +964,7 @@
                                         html `<${EditableProgressBlock} name="languages" index=${i} values=${language} isEditable=${isEditable&&isEditable.languages&&isEditable.languages?isEditable.languages[i]:false} toggleIsEditableCB=${this.toggleIsEditableBlock} removeElementBlockCB=${this.removeElementBlock} valueUpdaterBlock=${this.updateTextInputBlock} />`
                                     )):null}
                                     <${NewEditableProgressBlock} name="languages" isActive=${addNew?addNew.languages:false} addNewBlockCB=${this.addTextInputBlock} toggleAddNewCB=${this.toggleAddNew} />
-                                    <button class="button buttongreen ${addNew&&addNew.languages?'disable':''}" onClick=${() => { this.toggleAddNew('languages') }}>+</button>
+                                    <button class="button buttongreen ${addNew&&addNew.languages?'disable':''}" onClick=${() => { this.toggleAddNew('languages') }} title="Add New Language">+</button>
                                 </div>
                         </div>
                     </div>
@@ -1004,7 +998,7 @@
                                         html `<${EditableBlock} blockType="experience" index=${i} name="experiences" values=${experience} isEditable=${isEditable&&isEditable.experiences&&isEditable.experiences?isEditable.experiences[i]:false} toggleIsEditableCB=${this.toggleIsEditableBlock} removeElementBlockCB=${this.removeElementBlock} valueUpdaterBlock=${this.updateTextInputBlock} />`
                                     )):null}
                                     <${NewEditableBlock} blockType="experience" name="experiences" isActive=${addNew?addNew.experiences:false} addNewBlockCB=${this.addTextInputBlock} toggleAddNewCB=${this.toggleAddNew} />
-                                    <button class="button buttongreen ${addNew&&addNew.experiences?'disable':''}" onClick=${() => { this.toggleAddNew('experiences') }}>+</button>
+                                    <button class="button buttongreen ${addNew&&addNew.experiences?'disable':''}" onClick=${() => { this.toggleAddNew('experiences') }} title="Add New Experience">+</button>
                                 </div>
                             </div>
                             <div class="module">
@@ -1016,7 +1010,7 @@
                                         html `<${EditableBlock} blockType="education" index=${i} name="educations" values=${experience} isEditable=${isEditable&&isEditable.educations&&isEditable.educations?isEditable.educations[i]:false} toggleIsEditableCB=${this.toggleIsEditableBlock} removeElementBlockCB=${this.removeElementBlock} valueUpdaterBlock=${this.updateTextInputBlock} />`
                                     )):null}
                                     <${NewEditableBlock} blockType="education" name="educations" isActive=${addNew?addNew.educations:false} addNewBlockCB=${this.addTextInputBlock} toggleAddNewCB=${this.toggleAddNew} />
-                                    <button class="button buttongreen ${addNew&&addNew.educations?'disable':''}" onClick=${() => { this.toggleAddNew('educations') }}>+</button>
+                                    <button class="button buttongreen ${addNew&&addNew.educations?'disable':''}" onClick=${() => { this.toggleAddNew('educations') }} title="Add New Education">+</button>
                                 </div>
                             </div>
                             <div class="module">
@@ -1028,7 +1022,7 @@
                                         html `<${EditableBlock} blockType="lean" index=${i} name="successes" values=${experience} isEditable=${isEditable&&isEditable.successes?isEditable.successes[i]:false} toggleIsEditableCB=${this.toggleIsEditableBlock} removeElementBlockCB=${this.removeElementBlock} valueUpdaterBlock=${this.updateTextInputBlock} />`
                                     )):null}
                                     <${NewEditableBlock} blockType="lean" name="successes" isActive=${addNew?addNew.successes:false} addNewBlockCB=${this.addTextInputBlock} toggleAddNewCB=${this.toggleAddNew} />
-                                    <button class="button buttongreen ${addNew&&addNew.successes?'disable':''}" onClick=${() => { this.toggleAddNew('successes') }}>+</button>
+                                    <button class="button buttongreen ${addNew&&addNew.successes?'disable':''}" onClick=${() => { this.toggleAddNew('successes') }} title="Add New Success">+</button>
                                 </div>
                             </div>
                             <div class="module">
@@ -1040,7 +1034,7 @@
                                         html `<${EditableBlock} blockType="lean" index=${i} name="certificates" values=${experience} isEditable=${isEditable&&isEditable.certificates?isEditable.certificates[i]:false} toggleIsEditableCB=${this.toggleIsEditableBlock} removeElementBlockCB=${this.removeElementBlock} valueUpdaterBlock=${this.updateTextInputBlock} />`
                                     )):null}
                                     <${NewEditableBlock} blockType="lean" name="certificates" isActive=${addNew?addNew.certificates:false} addNewBlockCB=${this.addTextInputBlock} toggleAddNewCB=${this.toggleAddNew} />
-                                    <button class="button buttongreen ${addNew&&addNew.certificates?'disable':''}" onClick=${() => { this.toggleAddNew('certificates') }}>+</button>
+                                    <button class="button buttongreen ${addNew&&addNew.certificates?'disable':''}" onClick=${() => { this.toggleAddNew('certificates') }} title="Add New Certificate">+</button>
                                 </div>
                             </div>
                             <div class="module">
@@ -1052,7 +1046,7 @@
                                         html `<${EditableBlock} blockType="lean" index=${i} name="seminars" values=${experience} isEditable=${isEditable&&isEditable.seminars?isEditable.seminars[i]:false} toggleIsEditableCB=${this.toggleIsEditableBlock} removeElementBlockCB=${this.removeElementBlock} valueUpdaterBlock=${this.updateTextInputBlock} />`
                                     )):null}
                                     <${NewEditableBlock} blockType="lean" name="seminars" isActive=${addNew?addNew.seminars:false} addNewBlockCB=${this.addTextInputBlock} toggleAddNewCB=${this.toggleAddNew} />
-                                    <button class="button buttongreen ${addNew&&addNew.seminars?'disable':''}" onClick=${() => { this.toggleAddNew('seminars') }}>+</button>
+                                    <button class="button buttongreen ${addNew&&addNew.seminars?'disable':''}" onClick=${() => { this.toggleAddNew('seminars') }} title="Add New Seminar">+</button>
                                 </div>
                             </div>
                             <div class="module">
@@ -1064,7 +1058,7 @@
                                         html `<${EditableBlock} blockType="exam" index=${i} name="exams" values=${experience} isEditable=${isEditable&&isEditable.exams?isEditable.exams[i]:false} toggleIsEditableCB=${this.toggleIsEditableBlock} removeElementBlockCB=${this.removeElementBlock} valueUpdaterBlock=${this.updateTextInputBlock} />`
                                     )):null}
                                     <${NewEditableBlock} blockType="exam" name="exams" isActive=${addNew?addNew.exams:false} addNewBlockCB=${this.addTextInputBlock} toggleAddNewCB=${this.toggleAddNew} />
-                                    <button class="button buttongreen ${addNew&&addNew.exams?'disable':''}" onClick=${() => { this.toggleAddNew('exams') }}>+</button>
+                                    <button class="button buttongreen ${addNew&&addNew.exams?'disable':''}" onClick=${() => { this.toggleAddNew('exams') }} title="Add New Exam">+</button>
                                 </div>
                             </div>
                             <div class="module">
@@ -1076,7 +1070,7 @@
                                         html `<${EditableBlock} blockType="reference" index=${i} name="references" values=${experience} isEditable=${isEditable&&isEditable.references?isEditable.references[i]:false} toggleIsEditableCB=${this.toggleIsEditableBlock} removeElementBlockCB=${this.removeElementBlock} valueUpdaterBlock=${this.updateTextInputBlock} />`
                                     )):null}
                                     <${NewEditableBlock} blockType="reference" name="references" isActive=${addNew?addNew.references:false} addNewBlockCB=${this.addTextInputBlock} toggleAddNewCB=${this.toggleAddNew} />
-                                    <button class="button buttongreen ${addNew&&addNew.references?'disable':''}" onClick=${() => { this.toggleAddNew('references') }}>+</button>
+                                    <button class="button buttongreen ${addNew&&addNew.references?'disable':''}" onClick=${() => { this.toggleAddNew('references') }} title="Add New Reference">+</button>
                                 </div>
                             </div>
                     </div>
@@ -1155,7 +1149,7 @@
 
         render(props,{}){
             if(props.isDropdownVisible){
-                return html`<div><ul class="sp-list">${props.values.map((value, i) => (html`<li>${value} <button class="button buttonred" onClick=${() => { this.removeElement(i) }}>-</button></li>`))}</ul>
+                return html`<div><ul class="sp-list">${props.values.map((value, i) => (html`<li>${value} <button class="button buttonred" onClick=${() => { this.removeElement(i) }} title="Remove Item">-</button></li>`))}</ul>
                     <div class="dropdown-menu">
                         <div class="toggle dropdown-button">Please select...</div>
                         <div class="menu">
@@ -1164,7 +1158,7 @@
                     </div>
                 </div>`
             }else{
-                return html`<div><ul class="sp-list">${props.values.map((value, i) => (html`<li>${value} <button class="button buttonred" onClick=${() => { this.removeElement(i) }}>-</button></li>`))}</ul><button class="button buttongreen" onClick=${() => {this.toggleIsDropdownVisible()}}>+</button></div>`
+                return html`<div><ul class="sp-list">${props.values.map((value, i) => (html`<li>${value} <button class="button buttonred" onClick=${() => { this.removeElement(i) }} title="Remove Item">-</button></li>`))}</ul><button class="button buttongreen" onClick=${() => {this.toggleIsDropdownVisible()}} title="Add New">+</button></div>`
             }
         }
     }
@@ -1179,7 +1173,7 @@
         }
         render(props,{}){
             if(props.isEditable){
-                return html `<select type="text" value=${props.value} onChange=${(e)=>{props.valueUpdater(props.name,e.target.value)}}>
+                return html `<select type="text" title="Select to Add New Item" value=${props.value} onChange=${(e)=>{props.valueUpdater(props.name,e.target.value)}}>
                     <option selected="true" disabled="disabled">Please select..</option>
                     ${props.optionList.map((value, i) =>
                     (html`<option value=${value}>${value}</option>`))}</select>`
@@ -1221,7 +1215,7 @@
                             </div>
                         </div>
                         <div>
-                            <button class="button buttonblue" onClick=${()=>{this.toggleIsEditable(props.name,props.index)}}>Tamam</button>
+                            <button class="button buttonblue" onClick=${()=>{this.toggleIsEditable(props.name,props.index)}} title="Save the Current Block">OK</button>
                         </div>
                     </div>
                 `
@@ -1235,7 +1229,7 @@
                         </div>
                         <div class="exp-title">
                             <div class="exp-title-title">
-                                <span>${props.values.title}</span><button class="button buttonred" onClick=${()=>{this.removeElementBlock(props.name, props.index)}}>-</button>
+                                <span>${props.values.title}</span><button class="button buttonred" onClick=${()=>{this.removeElementBlock(props.name, props.index)}} title="Remove Block">-</button>
                             </div>
                             <div class="exp-title-place">
                                 <span>${props.values.institute}</span>
@@ -1260,7 +1254,7 @@
                             </div>
                         </div>
                         <div>
-                            <button class="button buttonblue" onClick=${() => { this.toggleIsEditable(props.name, props.index) }}>Tamam</button>
+                            <button class="button buttonblue" onClick=${() => { this.toggleIsEditable(props.name, props.index) }} title="Save the Current Block">OK</button>
                         </div>
                     </div>
                 `
@@ -1272,7 +1266,7 @@
                         </div>
                         <div class="exp-title">
                             <div class="exp-title-title">
-                                <span>${props.values.title}</span><button class="button buttonred" onClick=${() => { this.removeElementBlock(props.name, props.index) }}>-</button>
+                                <span>${props.values.title}</span><button class="button buttonred" onClick=${() => { this.removeElementBlock(props.name, props.index) }} title="Remove Block">-</button>
                             </div>
                             <div class="exp-title-description">
                                 <span>${props.values.details}</span>
@@ -1299,7 +1293,7 @@
                             </div>
                         </div>
                         <div>
-                            <button class="button buttonblue" onClick=${() => { this.toggleIsEditable(props.name, props.index) }}>Tamam</button>
+                            <button class="button buttonblue" onClick=${() => { this.toggleIsEditable(props.name, props.index) }} title="Save the Current Block">OK</button>
                         </div>
                     </div>
                 `
@@ -1313,7 +1307,7 @@
                         </div>
                         <div class="exp-title">
                             <div class="exp-title-title">
-                                <span>${props.values.title}</span><button class="button buttonred" onClick=${() => { this.removeElementBlock(props.name, props.index) }}>-</button>
+                                <span>${props.values.title}</span><button class="button buttonred" onClick=${() => { this.removeElementBlock(props.name, props.index) }} title="Remove Block">-</button>
                             </div>
                             <div class="exp-title-place">
                                 <span>ANO/GPA: </span><span>${props.values.institute}</span>
@@ -1338,7 +1332,7 @@
                             </div>
                         </div>
                         <div>
-                            <button class="button buttonblue" onClick=${() => { this.toggleIsEditable(props.name, props.index) }}>Tamam</button>
+                            <button class="button buttonblue" onClick=${() => { this.toggleIsEditable(props.name, props.index) }} title="Save the Current Block">OK</button>
                         </div>
                     </div>
                 `
@@ -1350,7 +1344,7 @@
                         </div>
                         <div class="exp-title">
                             <div class="exp-title-title">
-                                <span>${props.values.title}</span><button class="button buttonred" onClick=${() => { this.removeElementBlock(props.name, props.index) }}>-</button>
+                                <span>${props.values.title}</span><button class="button buttonred" onClick=${() => { this.removeElementBlock(props.name, props.index) }} title="Remove Block">-</button>
                             </div>
                             <div class="exp-title-description">
                                 <img style="width:20px;padding-right:5px;" src="https://insaatcv.com/wp-content/uploads/2018/07/exam.png" /><span style="font-size:20px">${props.values.details}</span>
@@ -1379,7 +1373,7 @@
                             </div>
                         </div>
                         <div>
-                            <button class="button buttonblue" onClick=${() => { this.toggleIsEditable(props.name, props.index) }}>Tamam</button>
+                            <button class="button buttonblue" onClick=${() => { this.toggleIsEditable(props.name, props.index) }} title="Save the Current Block">OK</button>
                         </div>
                     </div>
                 `
@@ -1391,7 +1385,7 @@
                         </div>
                         <div class="exp-title">
                             <div class="exp-title-title">
-                                <span>${props.values.title}</span><button class="button buttonred" onClick=${() => { this.removeElementBlock(props.name, props.index) }}>-</button>
+                                <span>${props.values.title}</span><button class="button buttonred" onClick=${() => { this.removeElementBlock(props.name, props.index) }} title="Remove Block">-</button>
                             </div>
                             <div class="exp-title-description">
                                  <div style="padding-bottom:5px" class="email">
@@ -1482,82 +1476,82 @@
             if(props.isActive && props.blockType=='experience'){
                 return html` <div class="exp-row">
                         <div class="year-range">
-                            <input onInput=${(e) => { this.handleStartChange(e.target.value) }} />
+                            <input onInput=${(e) => { this.handleStartChange(e.target.value) }} placeholder="Start"/>
                                 -
-                            <input onInput=${(e) => { this.handleFinishChange(e.target.value) }} />
+                            <input onInput=${(e) => { this.handleFinishChange(e.target.value) }} placeholder="End"/>
                         </div>
                         <div class="exp-title">
                             <div class="exp-title-title">
-                                <input onInput=${(e) => { this.handleTitleChange(e.target.value) }} />
+                                <input onInput=${(e) => { this.handleTitleChange(e.target.value) }} placeholder="Experience Title" />
                             </div>
                             <div class="exp-title-place">
-                                <input onInput=${(e) => { this.handleKurumChange(e.target.value) }} />
+                                <input onInput=${(e) => { this.handleKurumChange(e.target.value) }} placeholder="Institute"/>
                             </div>
                             <div class="exp-title-description">
-                                <textarea onInput=${(e) => { this.handleDetaylarChange(e.target.value) }} />
+                                <textarea onInput=${(e) => { this.handleDetaylarChange(e.target.value) }} placeholder="Description" />
                             </div>
                         </div>
                         <div>
-                            <button class="button buttonblue" onClick=${() => { this.toggleAddNew(props.name) }}>Tamam</button>
+                            <button class="button buttonblue" onClick=${() => { this.toggleAddNew(props.name) }} title="Save the Current Block">OK</button>
                         </div>
                     </div>
                 `
             } else if (props.isActive && props.blockType=='lean'){
                 return html` <div class="exp-row">
                         <div class="year-range">
-                            <input onInput=${(e) => { this.handleStartChange(e.target.value) }} />
+                            <input onInput=${(e) => { this.handleStartChange(e.target.value) }} placeholder="Year" />
                         </div>
                         <div class="exp-title">
                             <div class="exp-title-title">
-                                <input onInput=${(e) => { this.handleTitleChange(e.target.value) }} />
+                                <input onInput=${(e) => { this.handleTitleChange(e.target.value) }} placeholder="Title" />
                             </div>
                             <div class="exp-title-description">
-                                <textarea onInput=${(e) => { this.handleDetaylarChange(e.target.value) }} />
+                                <textarea onInput=${(e) => { this.handleDetaylarChange(e.target.value) }} placeholder="Description" />
                             </div>
                         </div>
                         <div>
-                            <button class="button buttonblue" onClick=${() => { this.toggleAddNew(props.name) }}>Tamam</button>
+                            <button class="button buttonblue" onClick=${() => { this.toggleAddNew(props.name) }} title="Save the Current Block">OK</button>
                         </div>
                     </div>
                 `
             } else if (props.isActive && props.blockType=='education'){
                 return html` <div class="exp-row">
                         <div class="year-range">
-                            <input onInput=${(e) => { this.handleStartChange(e.target.value) }} />
+                            <input onInput=${(e) => { this.handleStartChange(e.target.value) }} placeholder="Start"/>
                                 -
-                            <input onInput=${(e) => { this.handleFinishChange(e.target.value) }} />
+                            <input onInput=${(e) => { this.handleFinishChange(e.target.value) }} placeholder="End"/>
                         </div>
                         <div class="exp-title">
                             <div class="exp-title-title">
-                                <input onInput=${(e) => { this.handleTitleChange(e.target.value) }} />
+                                <input onInput=${(e) => { this.handleTitleChange(e.target.value) }} placeholder="Title"/>
                             </div>
                             <div class="exp-title-place">
-                                <span>ANO/GPA: </span><input style="width:79px" onInput=${(e) => { this.handleKurumChange(e.target.value) }} />
+                                <span>ANO/GPA: </span><input style="width:79px" onInput=${(e) => { this.handleKurumChange(e.target.value) }} placeholder="GPA" />
                             </div>
                             <div class="exp-title-description">
-                                <textarea onInput=${(e) => { this.handleDetaylarChange(e.target.value) }} />
+                                <textarea onInput=${(e) => { this.handleDetaylarChange(e.target.value) }} placeholder="Details" />
                             </div>
                         </div>
                         <div>
-                            <button class="button buttonblue" onClick=${() => { this.toggleAddNew(props.name) }}>Tamam</button>
+                            <button class="button buttonblue" onClick=${() => { this.toggleAddNew(props.name) }} title="Save the Current Block">OK</button>
                         </div>
                     </div>
                 `
             } else if (props.isActive && props.blockType == 'exam') {
                 return html` <div class="exp-row">
                         <div class="year-range">
-                            <input onInput=${(e) => { this.handleStartChange(e.target.value) }} />
+                            <input onInput=${(e) => { this.handleStartChange(e.target.value) }} placeholder="Year" />
                         </div>
                         <div class="exp-title">
                             <div class="exp-title-title">
-                                <input onInput=${(e) => { this.handleTitleChange(e.target.value) }} />
+                                <input onInput=${(e) => { this.handleTitleChange(e.target.value) }} placeholder="Title"/>
                             </div>
                             <div class="exp-title-description">
-                                <img style="width:20px;padding-right:5px;" src="https://insaatcv.com/wp-content/uploads/2018/07/exam.png" /><input onInput=${(e) => { this.handleDetaylarChange(e.target.value) }} />
+                                <img style="width:20px;padding-right:5px;" src="https://insaatcv.com/wp-content/uploads/2018/07/exam.png" /><input onInput=${(e) => { this.handleDetaylarChange(e.target.value) }} placeholder="Grade" />
                             </div>
                         </div>
                         <div>
-                            <button class="button buttonblue" onClick=${() => { this.toggleAddNew(props.name) }}>Tamam</button>
+                            <button class="button buttonblue" onClick=${() => { this.toggleAddNew(props.name) }} title="Save the Current Block">OK</button>
                         </div>
                     </div>
                 `
@@ -1568,21 +1562,21 @@
                         </div>
                         <div class="exp-title">
                             <div class="exp-title-title">
-                                <input onInput=${(e) => { this.handleTitleChange(e.target.value) }} />
+                                <input onInput=${(e) => { this.handleTitleChange(e.target.value) }} placeholder="Reference Person"/>
                             </div>
                             <div class="exp-title-description">
                                 <div style="padding-bottom:5px" class="email">
                                     <img style="width:10px;padding-right:5px;" src="https://insaatcv.com/wp-content/uploads/2018/03/envelope.png" />
-                                    <input onInput=${(e) => { this.handleEmailChange(e.target.value) }} />
+                                    <input onInput=${(e) => { this.handleEmailChange(e.target.value) }} placeholder="Contact E-mail"/>
                                 </div>
                                 <div style="padding-bottom:5px" class="mobile">
                                     <img style="width:10px;padding-right:5px;" src="https://insaatcv.com/wp-content/uploads/2018/03/phone-call.png" />
-                                    <input onInput=${(e) => { this.handleTelefonChange(e.target.value) }} />
+                                    <input onInput=${(e) => { this.handleTelefonChange(e.target.value) }} placeholder="Contact Phone"/>
                                 </div>
                             </div>
                         </div>
                         <div>
-                            <button class="button buttonblue" onClick=${() => { this.toggleAddNew(props.name) }}>Tamam</button>
+                            <button class="button buttonblue" onClick=${() => { this.toggleAddNew(props.name) }} title="Save the Current Block">OK</button>
                         </div>
                     </div>
                 `
@@ -1596,7 +1590,6 @@
             this.selectProgress = this.selectProgress.bind(this);
             this.toggleIsEditable = this.toggleIsEditable.bind(this);
             this.removeElementBlock = this.removeElementBlock.bind(this);
-            this.onOK = this.onOK.bind(this);
         }
         componentDidMount(){
             this.setState({
@@ -1605,10 +1598,6 @@
         }
         toggleIsEditable(name, index) {
             this.props.toggleIsEditableCB(name, index);
-        }
-        onOK(name,index){
-            this.props.toggleIsEditableCB(name, index);
-            this.props.valueUpdaterBlock(props.name, props.index, 'percentage', this.state.percentage);
         }
         removeElementBlock(name, index) {
             this.props.removeElementBlockCB(name, index);
@@ -1622,23 +1611,24 @@
             })
         }
         render(props,{}){
+            const b = 50;
             if(props.isEditable){
                 return html`
                 <div>
-                    <li><input value=${props.values.title} onInput=${(e) => { props.valueUpdaterBlock(props.name, props.index, 'title', e.target.value) }} /></li>
-                    <div class="competency-bar" onmousemove=${(e) => { this.selectProgress(e) }} onClick=${(e) => { this.selectProgress(e) }}>
-                        <div class="competency-level" style="width: ${this.state.percentage}%;"></div>
+                    <li><input value=${props.values.title} onInput=${(e) => { props.valueUpdaterBlock(props.name, props.index, 'title', e.target.value) }} placeholder="Title" /></li>
+                    <div class="competency-bar" onmousemove=${(e) => { console.log('seded');this.selectProgress(e) }} onClick=${(e) => { this.selectProgress(e) }}>
+                        <div class="competency-level" style="${{ width: this.state.percentage + '%' }};" title="Percentage"></div>
                     </div>
                     <div>
-                        <button class="button buttonblue" onClick=${() => { this.toggleIsEditable(props.name, props.index) }}>OK</button>
+                        <button class="button buttonblue" onClick=${() => { this.toggleIsEditable(props.name, props.index) }} title="Save the Current Block">OK</button>
                     </div>
                 </div>`
             }else{
                 return html`
                 <div onDblClick=${() => { this.toggleIsEditable(props.name, props.index) }}>
-                    <li>${props.values.title} <button class="button buttonred" onClick=${() => { this.removeElementBlock(props.name, props.index) }}>-</button></li>
+                    <li>${props.values.title} <button class="button buttonred" onClick=${() => { this.removeElementBlock(props.name, props.index) }} title="Remove Block">-</button></li>
                     <div class="competency-bar">
-                        <div class="competency-level" style="width: ${this.state.percentage}%;"></div>
+                        <div class="competency-level" style="${{width: this.state.percentage+'%'}};" title="Percentage"></div>
                     </div>
                 </div>`
             }
@@ -1650,11 +1640,11 @@
             super(props);
             this.selectProgress = this.selectProgress.bind(this);
             this.toggleAddNew = this.toggleAddNew.bind(this);
-            this.onOK = this.onOK.bind(this);
             this.handleTitleChange = this.handleTitleChange.bind(this);
         }
         componentDidMount(){
             this.setState({
+                title:'',
                 percentage:0
             })
         }
@@ -1662,13 +1652,9 @@
             this.props.addNewBlockCB(name, this.state);
             this.props.toggleAddNewCB(name);
             this.setState({
-                title: '',
-                percentage: '',
+                title:'',
+                percentage:0
             })
-        }
-        onOK(name,index){
-            this.props.toggleIsEditableCB(name, index);
-            this.props.valueUpdaterBlock(props.name, props.index, 'percentage', this.state.percentage);
         }
         selectProgress(e){
             let x = e.pageX - this.base.offsetLeft;
@@ -1686,12 +1672,12 @@
         render(props,{}){
             if (props.isActive) {
                 return html`<div>
-                    <li><input onInput=${(e) => { this.handleTitleChange(e.target.value) }} /></li>
+                    <li><input onInput=${(e) => { this.handleTitleChange(e.target.value) }} placeholder="Title"/></li>
                     <div class="competency-bar" onmousemove=${(e) => { this.selectProgress(e) }} onClick=${(e) => { this.selectProgress(e) }}>
-                        <div class="competency-level" style="width: ${this.state.percentage}%;"></div>
+                        <div class="competency-level" style="${{width: this.state.percentage+'%'}}" title="Percentage"></div>
                     </div>
                     <div>
-                        <button class="button buttonblue" onClick=${() => { this.toggleAddNew(props.name) }}>Tamam</button>
+                        <button class="button buttonblue" onClick=${() => { this.toggleAddNew(props.name) }} title="Save the Current Block">OK</button>
                     </div>
                 </div>
                 `
